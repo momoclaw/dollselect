@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/dollselect/static/css/main.dab1974a.css",
-    "main.js": "/dollselect/static/js/main.63b1aa2c.js",
+    "main.css": "/dollselect/static/css/main.aa0926e8.css",
+    "main.js": "/dollselect/static/js/main.b3e16ff3.js",
     "static/js/453.d85580f4.chunk.js": "/dollselect/static/js/453.d85580f4.chunk.js",
     "index.html": "/dollselect/index.html",
-    "main.dab1974a.css.map": "/dollselect/static/css/main.dab1974a.css.map",
-    "main.63b1aa2c.js.map": "/dollselect/static/js/main.63b1aa2c.js.map",
+    "main.aa0926e8.css.map": "/dollselect/static/css/main.aa0926e8.css.map",
+    "main.b3e16ff3.js.map": "/dollselect/static/js/main.b3e16ff3.js.map",
     "453.d85580f4.chunk.js.map": "/dollselect/static/js/453.d85580f4.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.dab1974a.css",
-    "static/js/main.63b1aa2c.js"
+    "static/css/main.aa0926e8.css",
+    "static/js/main.b3e16ff3.js"
   ]
 }
