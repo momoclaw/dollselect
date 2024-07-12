@@ -1,56 +1,56 @@
-import React, { useState, useRef } from 'react';
-import { Heart, X } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Heart, X, Star } from 'lucide-react';
 
-// 模拟的产品数据
-const products = [
-  { id: 1, name: "新款智能手表", description: "支持心率监测和睡眠追踪", color: "bg-blue-400" },
-  { id: 2, name: "无线降噪耳机", description: "20小时续航，高清音质", color: "bg-green-400" },
-  { id: 3, name: "便携式投影仪", description: "1080P高清，自动对焦", color: "bg-yellow-400" },
-  { id: 4, name: "智能家居套装", description: "包含智能灯泡、插座和传感器", color: "bg-pink-400" },
-  { id: 5, name: "多功能搅拌机", description: "强劲马达，多种模式", color: "bg-purple-400" },
+interface Product {
+  id: number;
+  name: string;
+  description: string;
+  imageUrl: string;
+}
+
+const initialProducts: Product[] = [
+  { id: 1, name: "产品1", description: "这是产品001的描述", imageUrl: "/image/001.png" },
+  { id: 2, name: "产品2", description: "这是产品2的描述", imageUrl: "/api/placeholder/400/300" },
+  { id: 3, name: "产品3", description: "这是产品3的描述", imageUrl: "/api/placeholder/400/300" },
 ];
 
-const ProductCard = () => {
+interface ProductCardProps {
+  products?: Product[];
+}
+
+const ProductCard: React.FC<ProductCardProps> = ({ products = initialProducts }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [position, setPosition] = useState(0);
-  const [startX, setStartX] = useState<number | null>(null);
-  const [likes, setLikes] = useState(new Array(products.length).fill(0));
-  const [dislikes, setDislikes] = useState(new Array(products.length).fill(0));
+  const [likes, setLikes] = useState<number[]>(new Array(products.length).fill(0));
   const [showResults, setShowResults] = useState(false);
-  const cardRef = useRef<HTMLDivElement>(null);
+  const [showRating, setShowRating] = useState(false);
+  const [isDisliking, setIsDisliking] = useState(false);
 
-  const currentProduct = products[currentIndex];
-
-  const handleTouchStart = (e: React.TouchEvent) => {
-    setStartX(e.touches[0].clientX);
-  };
-
-  const handleTouchMove = (e: React.TouchEvent) => {
-    if (startX === null) return;
-    const currentX = e.touches[0].clientX;
-    const newPosition = currentX - startX;
-    setPosition(newPosition);
-  };
-
-  const handleTouchEnd = () => {
-    if (Math.abs(position) > 100) {
-      if (position > 0) {
-        setLikes(prev => {
-          const newLikes = [...prev];
-          newLikes[currentIndex]++;
-          return newLikes;
-        });
-      } else {
-        setDislikes(prev => {
-          const newDislikes = [...prev];
-          newDislikes[currentIndex]++;
-          return newDislikes;
-        });
-      }
-      nextProduct();
+  useEffect(() => {
+    if (isDisliking) {
+      const timer = setTimeout(() => {
+        setIsDisliking(false);
+        nextProduct();
+      }, 300);
+      return () => clearTimeout(timer);
     }
-    setPosition(0);
-    setStartX(null);
+  }, [isDisliking]);
+
+  const handleSwipe = (direction: 'left' | 'right') => {
+    if (direction === 'right') {
+      setShowRating(true);
+    } else {
+      setIsDisliking(true);
+    }
+  };
+
+  const handleRating = (rating: number) => {
+    setLikes(prev => {
+      const newLikes = [...prev];
+      newLikes[currentIndex] = rating;
+      return newLikes;
+    });
+    setShowRating(false);
+    nextProduct();
   };
 
   const nextProduct = () => {
@@ -63,55 +63,93 @@ const ProductCard = () => {
 
   if (showResults) {
     return (
-      <div className="flex justify-center items-center h-screen bg-gray-100 p-4">
+      <div className="flex flex-col justify-center items-center min-h-screen bg-gray-100 p-4">
         <div className="text-2xl font-bold mb-4">评价结果统计</div>
-        {products.map((product, index) => (
-          <div key={product.id} className="mb-4 w-full max-w-sm bg-white rounded-lg shadow-lg p-4">
-            <h3 className="text-lg font-semibold">{product.name}</h3>
-            <p>喜欢: {likes[index]} 不喜欢: {dislikes[index]}</p>
-            <div className="mt-2 bg-gray-200 h-4 rounded-full">
-              <div
-                className="bg-green-500 h-4 rounded-full"
-                style={{ width: `${(likes[index] / (likes[index] + dislikes[index])) * 100}%` }}
-              ></div>
+        <div className="w-full max-w-md bg-white rounded-lg shadow-lg p-6">
+          {products.map((product, index) => (
+            <div key={product.id} className="mb-6">
+              <h3 className="text-lg font-semibold text-gray-800 mb-2">{product.name}</h3>
+              <div className="relative pt-1">
+                <div className="flex mb-2 items-center justify-between">
+                  <div>
+                    <span className="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-yellow-600 bg-yellow-200">
+                      喜欢程度
+                    </span>
+                  </div>
+                  <div className="text-right">
+                    <span className="text-xs font-semibold inline-block text-yellow-600">
+                      {likes[index]} / 5
+                    </span>
+                  </div>
+                </div>
+                <div className="overflow-hidden h-6 mb-4 text-xs flex rounded bg-yellow-200">
+                  <div style={{ width: `${(likes[index] / 5) * 100}%` }} className="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-yellow-400"></div>
+                </div>
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
     );
   }
 
+  const currentProduct = products[currentIndex];
+
   return (
-    <div className="flex justify-center items-center h-screen bg-gray-100 p-4">
-      <div
-        ref={cardRef}
-        className={`w-full max-w-sm ${currentProduct.color} rounded-lg shadow-lg overflow-hidden`}
-        style={{
-          transform: `translateX(${position}px) rotate(${position / 20}deg)`,
-          transition: 'transform 0.3s ease',
-        }}
-        onTouchStart={handleTouchStart}
-        onTouchMove={handleTouchMove}
-        onTouchEnd={handleTouchEnd}
+    <div className="flex flex-col justify-center items-center min-h-screen bg-gray-100 p-4">
+      <div 
+        className={`w-full max-w-sm bg-white rounded-lg shadow-lg overflow-hidden transition-all duration-300 ${
+          isDisliking ? 'opacity-0 translate-y-4' : 'opacity-100 translate-y-0'
+        }`}
       >
-        <div className="h-64 flex items-center justify-center relative" style={{ background: 'rgba(0,0,0,0.1)' }}>
-          <p className="text-2xl font-bold text-black text-center px-4">向左滑动不喜欢，向右滑动喜欢</p>
-          {position < -20 && (
-            <div className="absolute top-5 left-5 text-red-500">
-              <X size={40} />
-            </div>
-          )}
-          {position > 20 && (
-            <div className="absolute top-5 right-5 text-green-500">
-              <Heart size={40} />
-            </div>
-          )}
+        <div className="relative h-64 flex items-center justify-center overflow-hidden">
+          <img src={currentProduct.imageUrl} alt={currentProduct.name} className="w-full h-full object-cover" />
+          <p className="absolute bottom-0 left-0 right-0 bg-black bg-opacity-50 text-white text-center py-2">
+            产品 {currentIndex + 1} / {products.length}
+          </p>
         </div>
-        <div className="bg-white p-4">
+        <div className="p-4">
           <h2 className="text-xl font-bold text-black">{currentProduct.name}</h2>
-          <p className="text-sm text-black">{currentProduct.description}</p>
+          <p className="text-sm text-black mt-2">{currentProduct.description}</p>
         </div>
       </div>
+
+      <div className="mt-8 flex justify-center space-x-16">
+        <button
+          onClick={() => handleSwipe('left')}
+          className="bg-white rounded-full p-6 shadow-lg transform transition-transform duration-200 hover:scale-110"
+          disabled={isDisliking}
+        >
+          <X className="text-red-500" size={48} />
+        </button>
+        <button
+          onClick={() => handleSwipe('right')}
+          className="bg-white rounded-full p-6 shadow-lg transform transition-transform duration-200 hover:scale-110"
+          disabled={isDisliking}
+        >
+          <Heart className="text-green-500" size={48} />
+        </button>
+      </div>
+
+      {showRating && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+          <div className="bg-white p-6 rounded-lg shadow-lg">
+            <div className="text-xl font-bold mb-4 text-center">请选择您喜欢的程度</div>
+            <div className="flex justify-center space-x-2">
+              {[1, 2, 3, 4, 5].map(rating => (
+                <button
+                  key={rating}
+                  onClick={() => handleRating(rating)}
+                  className="w-12 h-12 bg-yellow-400 text-white rounded-full flex flex-col items-center justify-center hover:bg-yellow-500 transition-colors duration-200"
+                >
+                  <span className="text-sm">{rating}</span>
+                  <Star fill="white" size={16} />
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
