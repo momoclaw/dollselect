@@ -9,7 +9,7 @@ interface Product {
 }
 
 const initialProducts: Product[] = [
-  { id: 1, name: "产品1", description: "这是产品001的描述", imageUrl: "/image/001.png" },
+  { id: 1, name: "产品1", description: "这是产品1的描述", imageUrl: "https://cdn.discordapp.com/attachments/1105120304709259369/1260272971461693552/e3a3c5dd7d400730bc66383ddf964363.jpg?ex=669203eb&is=6690b26b&hm=a908ec4cd45b6244a0805e5b552b9dd451a11c6d90c99303eb8a5234bd5c8c99&" },
   { id: 2, name: "产品2", description: "这是产品2的描述", imageUrl: "/api/placeholder/400/300" },
   { id: 3, name: "产品3", description: "这是产品3的描述", imageUrl: "/api/placeholder/400/300" },
 ];
