@@ -2,6 +2,17 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+  font-family: 'JiangxiKai';
+  src: url('./fonts/A.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+.font-custom {
+  font-family: 'JiangxiKai', sans-serif;
+}
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
