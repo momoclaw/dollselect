@@ -9,11 +9,11 @@ interface Product {
 }
 
 const initialProducts: Product[] = [
-  { id: 1, name: "7寸抓取", description: "棕色小仓鼠", imageUrl: `${process.env.PUBLIC_URL}/images/002.png` },
-  { id: 2, name: "7寸抓取", description: "双色小猫咪", imageUrl: `${process.env.PUBLIC_URL}/images/006.png` },
-  { id: 3, name: "7寸抓取", description: "大虾天妇罗", imageUrl: `${process.env.PUBLIC_URL}/images/003.png` },
-  { id: 4, name: "1积分兑换", description: "草莓捏捏乐", imageUrl: `${process.env.PUBLIC_URL}/images/004.png` },
-  { id: 5, name: "5积分兑换", description: "卡皮巴拉湿巾纸 整包", imageUrl: `${process.env.PUBLIC_URL}/images/005.png` },
+  { id: 1, name: "7寸抓取", description: "棕色小仓鼠", imageUrl: "https://pic.imgdb.cn/item/66968b59d9c307b7e9681a3b.png" },
+  { id: 2, name: "7寸抓取", description: "双色小猫咪", imageUrl: `https://pic.imgdb.cn/item/66968b59d9c307b7e9681a95.webp` },
+  { id: 3, name: "7寸抓取", description: "大虾天妇罗", imageUrl: `https://pic.imgdb.cn/item/66968b59d9c307b7e9681a66.png` },
+  { id: 4, name: "1积分兑换", description: "草莓捏捏乐", imageUrl: `https://pic.imgdb.cn/item/66968ab3d9c307b7e96591fd.png` },
+  { id: 5, name: "5积分兑换", description: "卡皮巴拉湿巾纸 整包", imageUrl: `https://pic.imgdb.cn/item/66968b59d9c307b7e96819c3.png` },
   { id: 6, name: "10积分兑换", description: "草莓美乐蒂40cm", imageUrl: `${process.env.PUBLIC_URL}/images/101.png` },
   { id: 7, name: "10积分兑换", description: "草莓库洛米40cm", imageUrl: `${process.env.PUBLIC_URL}/images/102.png` },
   { id: 8, name: "20积分兑换", description: "小火龙50cm", imageUrl: `${process.env.PUBLIC_URL}/images/103.png` },
